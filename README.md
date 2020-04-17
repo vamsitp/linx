@@ -1,15 +1,15 @@
 # linx
-**Extract and save links from PowerPoint/Word as Markdown/Html/Csv!**
+**Bulk-extract and save links from PowerPoint/Word as Markdown/Html/Csv!**
 
 ---
 
 > **USAGE**: 
 
-**`linx`** `DeckWithLinks.pptx [/DocWithLinks.docx]` `md [/html/csv]`
+**`linx`** `--c:\deckWithLinks.pptx;c:\docWithLinks.docx;c:\folderWithDocs` `--md` (OR) `--html` (OR) `--csv`
 
 ---
 
-> **PRE-REQ**: [.NET Core SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+> **PRE-REQ**: [.NET Core SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 
 ```batch
 # Install from nuget.org
