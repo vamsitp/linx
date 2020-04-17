@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>x64</Platforms>
+    <LangVersion>preview</LangVersion>
+    <PackAsTool>true</PackAsTool>
+    <IsTool>true</IsTool>
+    <ToolCommandName>linx</ToolCommandName>
+    <PackageOutputPath>./bin</PackageOutputPath>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Vamsi TP</Authors>
+    <Title>Linx</Title>
+    <PackageDescription>Extract and save links from PowerPoint/Word as Markdown/Html/Csv</PackageDescription>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/vamsitp/linx</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/vamsitp/linx</RepositoryUrl>
+    <PackageTags>PowerPoint;Word;Link;Hyperlink;Extract;Parse;Office</PackageTags>
+    <Company>Microsoft</Company>
+    <Version>1.0.0</Version>
+    <StartupObject>Linx.Program</StartupObject>
+    <Deterministic>false</Deterministic>
+    <NoWarn>NU1701</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ColoredConsole" Version="1.0.0" />
+    <PackageReference Include="CsvHelper" Version="15.0.4" />
+    <PackageReference Include="Microsoft.Office.Interop.PowerPoint" Version="15.0.4420.1017" />
+    <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4420.1017" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="office">
+      <HintPath>office.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!--https://github.com/NuGet/Home/issues/7001-->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="powershell -Command &quot;&amp; {Get-ChildItem -Path '.\bin\x64\Debug\netcoreapp3.1' -File -Recurse | foreach-object {$_.LastWriteTime = (Get-Date)}}&quot;" />
+  </Target>
+
+</Project>
