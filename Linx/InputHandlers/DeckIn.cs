@@ -53,7 +53,7 @@
 
         private void ParseSlide(List<Item> results, int s, Slide slide)
         {
-            ColorConsole.Write(".".White());
+            ColorConsole.Write(s.ToString().White());
             var links = slide.Hyperlinks;
             if (links.Count > 0)
             {
@@ -69,16 +69,17 @@
             foreach (Hyperlink link in links)
             {
                 var text = string.Empty;
+                var address = link.Address?.Sanitize();
                 try
                 {
                     text = link.TextToDisplay?.Trim();
                 }
                 catch
                 {
-                    ColorConsole.Write(" ".OnRed());
+                    ColorConsole.Write(l.ToString().OnRed());
                 }
 
-                ParseLink(results, s, l, text, link.Address);
+                ParseLink(results, s, l, text, address);
                 link.NAR();
                 l++;
             }

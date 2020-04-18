@@ -73,6 +73,7 @@
         private static void ProcessFile(OutputFormat format, List<string> outputs, string file)
         {
             ColorConsole.WriteLine("input", ": ".Green(), file.DarkGray());
+            ColorConsole.Write("> ".Green());
             try
             {
                 var results = InputBase.GetInstance(file).ExtractLinks(file);

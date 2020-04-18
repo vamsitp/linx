@@ -62,7 +62,7 @@
 
         private int ParsePage(List<Item> results, Application app, Document doc, int p, int lastPageEnd)
         {
-            ColorConsole.Write(".".White());
+            ColorConsole.Write(p.ToString().White());
             Range pageBreakRange = null;
             try
             {
@@ -94,16 +94,17 @@
             foreach (Hyperlink link in links)
             {
                 var text = string.Empty;
+                var address = link.Address?.Sanitize();
                 try
                 {
                     text = link.TextToDisplay?.Trim();
                 }
                 catch
                 {
-                    ColorConsole.Write(" ".OnRed());
+                    ColorConsole.Write(l.ToString().OnRed());
                 }
 
-                ParseLink(results, s, l, text, link.Address);
+                ParseLink(results, s, l, text, address);
                 link.NAR();
                 l++;
             }

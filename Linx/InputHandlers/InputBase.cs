@@ -15,6 +15,10 @@
 
     public abstract class InputBase : IInput
     {
+        private static readonly string[] Exclusions = new string[]
+        {
+        };
+
         public static IInput GetInstance(string file)
         {
             return Path.GetExtension(file).Equals(".pptx") ? (IInput)new DeckIn() : (IInput)new DocIn();
@@ -29,13 +33,23 @@
         {
             if (!string.IsNullOrWhiteSpace(link))
             {
-                ColorConsole.Write(".".DarkGray());
-                if (string.IsNullOrEmpty(text))
+                if (!Exclusions.Any(link.Contains))
                 {
-                    text = HttpUtility.UrlDecode(link).Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault().Replace("-", " ") + "?!";
-                }
+                    if (string.IsNullOrEmpty(text))
+                    {
+                        text = HttpUtility.UrlDecode(link).Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault().Replace("-", " ") + "?!";
+                    }
 
-                results.Add(new Item($"{s}.{l}", text, link.Trim()));
+                    if (!results.Any(x => x.Text.Equals(text, StringComparison.Ordinal) && x.Link.Equals(link, StringComparison.Ordinal)))
+                    {
+                        ColorConsole.Write(l.ToString().DarkGray());
+                        results.Add(new Item($"{s}.{l}", text, link));
+                    }
+                    else
+                    {
+                        ColorConsole.Write(l.ToString().DarkRed());
+                    }
+                }
             }
         }
     }
