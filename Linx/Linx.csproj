@@ -18,7 +18,7 @@
     <RepositoryUrl>https://github.com/vamsitp/linx</RepositoryUrl>
     <PackageTags>PowerPoint;Word;Link;Hyperlink;Extract;Parse;Office</PackageTags>
     <Company>Microsoft</Company>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <StartupObject>Linx.Program</StartupObject>
     <Deterministic>false</Deterministic>
     <NoWarn>NU1701</NoWarn>

@@ -1,5 +1,5 @@
 # linx
-**Bulk-extract and save links from PowerPoint/Word as Markdown/Html/Csv!**
+**Bulk-extract and save/merge links from PowerPoint/Word as Markdown/Html/Csv!**
 
 ---
 

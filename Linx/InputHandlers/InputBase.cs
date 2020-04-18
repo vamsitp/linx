@@ -15,13 +15,19 @@
 
     public abstract class InputBase : IInput
     {
+        private static readonly Dictionary<string, IInput> Inputs = new Dictionary<string, IInput>
+        {
+            { ".pptx", (IInput)new DeckIn() },
+            { ".docx", (IInput)new DeckIn() }
+        };
+
         private static readonly string[] Exclusions = new string[]
         {
         };
 
         public static IInput GetInstance(string file)
         {
-            return Path.GetExtension(file).Equals(".pptx") ? (IInput)new DeckIn() : (IInput)new DocIn();
+            return Inputs[Path.GetExtension(file)];
         }
 
         public virtual List<Item> ExtractLinks(object file)

@@ -53,8 +53,23 @@
             }
 
             ColorConsole.WriteLine("outputs", ": ".Green(), outputs.Count.ToString().DarkGray());
-            outputs.ForEach(o => ColorConsole.WriteLine(o.DarkGray()));
-            ColorConsole.Write("\npress any key to continue", "...".Green());
+            if (outputs?.Count > 0)
+            {
+                if (outputs.Count > 1)
+                {
+                    ColorConsole.Write("\n", "> ".Green(), "Merge outputs? ", "(y/n) ".Green());
+                    var yesno = Console.ReadKey();
+                    ColorConsole.WriteLine();
+                    if (yesno.Key == ConsoleKey.Y)
+                    {
+                        OutputBase.GetInstance(format).Merge(outputs);
+                    }
+                }
+
+                outputs.ForEach(o => ColorConsole.WriteLine(o.DarkGray()));
+            }
+
+            ColorConsole.Write("\nPress any key to continue", "...".Green());
             Console.ReadLine();
             Process.Start(new ProcessStartInfo(BasePath) { UseShellExecute = true });
         }
