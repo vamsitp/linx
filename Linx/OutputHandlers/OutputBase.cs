@@ -45,7 +45,7 @@
                 }
 
                 var first = outputFiles.FirstOrDefault();
-                var path = Path.Combine(Path.GetDirectoryName(first), $"{nameof(Linx)}_Merged_({outputFiles.Count}){Path.GetExtension(first)}");
+                var path = Path.Combine(Path.GetDirectoryName(first), $"{nameof(Linx)}_Merged_[{outputFiles.Count}]{Path.GetExtension(first)}");
                 File.WriteAllText(path, mergedOutput.ToString());
                 outputFiles.Add(path);
                 return true;
