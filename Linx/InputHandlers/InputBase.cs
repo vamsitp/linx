@@ -21,9 +21,7 @@
             { ".docx", (IInput)new DeckIn() }
         };
 
-        private static readonly string[] Exclusions = new string[]
-        {
-        };
+        public static List<string> Exclusions { get; set; }
 
         public static IInput GetInstance(string file)
         {
@@ -39,7 +37,7 @@
         {
             if (!string.IsNullOrWhiteSpace(link))
             {
-                if (!Exclusions.Any(link.Contains))
+                if (!(Exclusions?.Any(link.Contains) == true))
                 {
                     if (string.IsNullOrEmpty(text))
                     {

@@ -11,6 +11,8 @@
 
     public class Program
     {
+        private const string ExclusionsKey = "linx_exclusions";
+
         private static readonly string CurrDir = Environment.CurrentDirectory;
         private static readonly string MyDocsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         private static readonly string BasePath = Directory.Exists(CurrDir) ? CurrDir : MyDocsDir;
@@ -33,6 +35,7 @@
                 inputs = ProcessInputs(ref format, param);
             }
 
+            InputBase.Exclusions = (Environment.GetEnvironmentVariable(ExclusionsKey, EnvironmentVariableTarget.User) ?? Environment.GetEnvironmentVariable(ExclusionsKey, EnvironmentVariableTarget.Machine))?.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)?.Select(x => x.Trim()).ToList();
             foreach (var input in inputs)
             {
                 if (File.Exists(input))

@@ -7,6 +7,8 @@
 
 **`linx`** `--c:\deckWithLinks.pptx;c:\docWithLinks.docx;c:\folderWithDocs` `--md` (OR) `--html` (OR) `--csv`
 
+> Set **`linx_exclusions`** *env-var* to exclude links that contain specific keywords (comma-separated). 
+> e.g. **`setx linx_exclusions host1,sub-domain2,someurl.com`**
 ---
 
 > **PRE-REQ**: [.NET Core SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1)
