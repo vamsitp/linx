@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using ColoredConsole;
 
@@ -53,39 +54,20 @@
 
         private void ParseSlide(List<Item> results, int s, Slide slide)
         {
-            ColorConsole.Write(s.ToString().White());
+            ColorConsole.Write(s.ToString().Green());
             var links = slide.Hyperlinks;
             if (links.Count > 0)
             {
-                ParseLinks(results, s, links);
+                ParseLinks(results, s, links.Cast<Hyperlink>()?.Select(link =>
+                {
+                    var text = link.Type == MsoHyperlinkType.msoHyperlinkRange ? link.TextToDisplay?.Trim() : string.Empty;
+                    var item = new Item(string.Empty, text, link.Address);
+                    link.NAR();
+                    return item;
+                })?.ToList());
             }
 
             slide.NAR();
-        }
-
-        private void ParseLinks(List<Item> results, int s, Hyperlinks links)
-        {
-            var l = 1;
-            foreach (Hyperlink link in links)
-            {
-                var text = string.Empty;
-                var address = link.Address?.Sanitize();
-                try
-                {
-                    text = link.TextToDisplay?.Trim();
-                }
-                catch
-                {
-                    ColorConsole.Write(l.ToString().OnRed());
-                }
-
-                ParseLink(results, s, l, text, address);
-                link.NAR();
-                l++;
-            }
-
-            results.Add(new Item(string.Empty, string.Empty, string.Empty));
-            links.NAR();
         }
     }
 }

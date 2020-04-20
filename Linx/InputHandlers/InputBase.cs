@@ -33,25 +33,37 @@
             throw new NotImplementedException();
         }
 
+        protected void ParseLinks(List<Item> results, int s, List<Item> items)
+        {
+            if (items?.Count > 0)
+            {
+                var l = 1;
+                foreach (Item item in items)
+                {
+                    ParseLink(results, s, l, item.Text, item.Link);
+                    l++;
+                }
+
+                results.Add(new Item(string.Empty, string.Empty, string.Empty));
+            }
+        }
+
         protected void ParseLink(List<Item> results, int s, int l, string text, string link)
         {
             if (!string.IsNullOrWhiteSpace(link))
             {
-                if (!(Exclusions?.Any(link.Contains) == true))
+                var sanitizedLink = link?.SanitizeLink();
+                if (!(Exclusions?.Any(e => sanitizedLink.Contains(e, StringComparison.OrdinalIgnoreCase)) == true))
                 {
-                    if (string.IsNullOrEmpty(text))
+                    var sanitizedText = text?.SanitizeText(sanitizedLink);
+                    if (!results.Any(r => r.Text.Equals(sanitizedText, StringComparison.Ordinal) && r.Link.Equals(sanitizedLink, StringComparison.Ordinal)))
                     {
-                        text = HttpUtility.UrlDecode(link).Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault().Replace("-", " ") + "?!";
-                    }
-
-                    if (!results.Any(x => x.Text.Equals(text, StringComparison.Ordinal) && x.Link.Equals(link, StringComparison.Ordinal)))
-                    {
-                        ColorConsole.Write(l.ToString().DarkGray());
-                        results.Add(new Item($"{s}.{l}", text, link));
+                        ColorConsole.Write(l.ToString());
+                        results.Add(new Item($"{s}.{l}", sanitizedText, sanitizedLink));
                     }
                     else
                     {
-                        ColorConsole.Write(l.ToString().DarkRed());
+                        ColorConsole.Write(l.ToString().DarkGray());
                     }
                 }
             }

@@ -2,9 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using ColoredConsole;
 
+    using Microsoft.Office.Core;
     using Microsoft.Office.Interop.Word;
 
     using Range = Microsoft.Office.Interop.Word.Range;
@@ -62,7 +63,7 @@
 
         private int ParsePage(List<Item> results, Application app, Document doc, int p, int lastPageEnd)
         {
-            ColorConsole.Write(p.ToString().White());
+            ColorConsole.Write(p.ToString().Green());
             Range pageBreakRange = null;
             try
             {
@@ -70,7 +71,14 @@
                 var links = doc.Range(lastPageEnd, pageBreakRange.End).Hyperlinks;
                 if (links.Count > 0)
                 {
-                    ParseLinks(results, p, links);
+                    ParseLinks(results, p, links.Cast<Hyperlink>()?.Select(link =>
+                    {
+                        var text = link.Type == MsoHyperlinkType.msoHyperlinkRange ? link.TextToDisplay?.Trim() : string.Empty;
+                        var item = new Item(string.Empty, text, link.Address);
+                        link.NAR();
+                        return item;
+                    })?.ToList());
+                    links.NAR();
                 }
 
                 lastPageEnd = pageBreakRange.End;
@@ -86,31 +94,6 @@
             }
 
             return lastPageEnd;
-        }
-
-        private void ParseLinks(List<Item> results, int s, Hyperlinks links)
-        {
-            var l = 1;
-            foreach (Hyperlink link in links)
-            {
-                var text = string.Empty;
-                var address = link.Address?.Sanitize();
-                try
-                {
-                    text = link.TextToDisplay?.Trim();
-                }
-                catch
-                {
-                    ColorConsole.Write(l.ToString().OnRed());
-                }
-
-                ParseLink(results, s, l, text, address);
-                link.NAR();
-                l++;
-            }
-
-            results.Add(new Item(string.Empty, string.Empty, string.Empty));
-            links.NAR();
         }
     }
 }

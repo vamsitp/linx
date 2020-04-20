@@ -13,10 +13,6 @@
     {
         private const string ExclusionsKey = "linx_exclusions";
 
-        private static readonly string CurrDir = Environment.CurrentDirectory;
-        private static readonly string MyDocsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        private static readonly string BasePath = Directory.Exists(CurrDir) ? CurrDir : MyDocsDir;
-
         public static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -74,7 +70,6 @@
 
             ColorConsole.Write("\nPress any key to continue", "...".Green());
             Console.ReadLine();
-            Process.Start(new ProcessStartInfo(BasePath) { UseShellExecute = true });
         }
 
         private static string[] ProcessInputs(ref OutputFormat format, string[] param)
@@ -91,11 +86,11 @@
         private static void ProcessFile(OutputFormat format, List<string> outputs, string file)
         {
             ColorConsole.WriteLine("input", ": ".Green(), file.DarkGray());
-            ColorConsole.Write("> ".Green());
+            ColorConsole.Write("> ");
             try
             {
                 var results = InputBase.GetInstance(file).ExtractLinks(file);
-                var outputFile = Path.Combine(BasePath, $"{$"{nameof(Linx)}_{Path.GetFileName(file)}."}{format}");
+                var outputFile = Path.Combine(Path.GetDirectoryName(file), $"{$"{nameof(Linx)}_{Path.GetFileName(file)}."}{format}");
                 new ConsoleOut().Save(results, outputFile);
                 if (OutputBase.GetInstance(format).Save(results, outputFile))
                 {
