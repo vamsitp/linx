@@ -18,7 +18,7 @@
     <RepositoryUrl>https://github.com/vamsitp/linx</RepositoryUrl>
     <PackageTags>PowerPoint;Word;Link;Hyperlink;Extract;Parse;Office</PackageTags>
     <Company>Microsoft</Company>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <StartupObject>Linx.Program</StartupObject>
     <Deterministic>false</Deterministic>
     <NoWarn>NU1701</NoWarn>
@@ -26,9 +26,9 @@
 
   <ItemGroup>
     <PackageReference Include="ColoredConsole" Version="1.0.0" />
-    <PackageReference Include="CsvHelper" Version="15.0.4" />
+    <PackageReference Include="CsvHelper" Version="15.0.5" />
     <PackageReference Include="Microsoft.Office.Interop.PowerPoint" Version="15.0.4420.1017" />
-    <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4420.1017" />
+    <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1003" />
   </ItemGroup>
 
   <ItemGroup>

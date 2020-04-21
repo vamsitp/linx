@@ -18,7 +18,7 @@
         private static readonly Dictionary<string, IInput> Inputs = new Dictionary<string, IInput>
         {
             { ".pptx", (IInput)new DeckIn() },
-            { ".docx", (IInput)new DeckIn() }
+            { ".docx", (IInput)new DocIn() }
         };
 
         public static List<string> Exclusions { get; set; }
