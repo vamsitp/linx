@@ -3,14 +3,19 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     using ColoredConsole;
 
     using Microsoft.Office.Core;
     using Microsoft.Office.Interop.PowerPoint;
 
+    using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+
     public class DeckIn : InputBase
     {
+        private Regex NotesLinkParser = new Regex(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         public override List<Item> ExtractLinks(object file)
         {
             List<Item> results = null;
@@ -66,6 +71,31 @@
                     return item;
                 })?.ToList());
             }
+
+            if (slide.HasNotesPage == MsoTriState.msoTrue)
+            {
+                var notesPages = slide.NotesPage;
+                foreach (Shape shape in notesPages.Shapes)
+                {
+                    if (shape.Type == MsoShapeType.msoPlaceholder && shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody)
+                    {
+                        var notes = shape.TextFrame.TextRange.Text;
+                        var notesLinks = new List<Item>();
+
+                        // Credit: https://stackoverflow.com/a/10576770
+                        foreach (Match m in NotesLinkParser.Matches(notes))
+                        {
+                            notesLinks.Add(new Item(string.Empty, m.Value.Split('/').LastOrDefault().Replace("-", " ").Replace("_", " "), m.Value));
+                        }
+
+                        if (notesLinks.Count > 0)
+                        {
+                            ParseLinks(results, s, notesLinks);
+                        }
+                    }
+                }
+            }
+
 
             slide.NAR();
         }

@@ -26,7 +26,7 @@
             }
             else
             {
-                ColorConsole.Write("Provide the files to parse links and the format to save", " (e.g. --c:\\deckWithLinks.pptx;c:\\docWithLinks.docx;c:\\folderWithDocs --md)".DarkGray(), ": ".Green());
+                ColorConsole.Write("Provide the files to parse links and the format to save", " (e.g. c:\\deckWithLinks.pptx;c:\\docWithLinks.docx;c:\\folderWithDocs --md)".DarkGray(), ": ".Green());
                 var param = Console.ReadLine().Split("--", StringSplitOptions.RemoveEmptyEntries);
                 inputs = ProcessInputs(ref format, param);
             }
